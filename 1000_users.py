@@ -45,27 +45,30 @@ def generate_password():
     return ''.join(random.choice(characters) for i in range(30))
 
 date = get_date()
-f = open(f"sip_{date}.conf", "w")
-
-
-
-
+result_filename = f"sip_{date}.conf"
+file_sip_phones = open(result_filename, "w")
 
 for i in range(count):
-    f.write(f"[{start + i}]")
+    file_sip_phones.write(f"[{start + i}]")
     if (len(args.sections) > 0):
-        f.write("(")
+        file_sip_phones.write("(")
         for s in args.sections:
             if s != args.sections[-1]:
-                f.write(f"{s},")
+                file_sip_phones.write(f"{s},")
             else:
-                f.write(f"{s})\n")
+                file_sip_phones.write(f"{s})\n")
     else:
-        f.write("\n")
+        file_sip_phones.write("\n")
 
     password = generate_password()
-    f.write(f"secret={password}\n")
-    f.write("\n\n")
+    file_sip_phones.write(f"secret={password}\n")
+    file_sip_phones.write("\n\n")
 
-f.close()
+file_sip_phones.close()
+
+file_sip_conf = open('sip.conf', 'a')
+file_sip_conf.write(f"\n#include {result_filename}\n")
+file_sip_conf.close()
+
+
 
