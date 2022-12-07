@@ -10,16 +10,14 @@ types = {"friend","peer", "user"}
 
 #parse args
 parser = argparse.ArgumentParser(description='Info about users for sip.conf')
-parser.add_argument('--start', dest='start', type=int, help='Start number for dialplan')
-parser.add_argument('--count', dest='count', type=int, help='Number of users we want to add')
-parser.add_argument('--type', dest='type', type=str, help='Type of user (friend, user, peer)')
-#parser.add_argument('--context', dest='context', type=str, help='Context for dialplan')
+parser.add_argument('-s','--start', dest='start', type=int, help='Start number for dialplan')
+parser.add_argument('-c','--count', dest='count', type=int, help='Number of users we want to add')
+parser.add_argument('-S','--sections', dest='sections', nargs='+', help='Sections with general parameters')
 
 args = parser.parse_args()
 print(args.start)
 print(args.count)
-print(args.type)
-#print(args.context)
+print(args.sections[0])
 #
 
 if (args.count == None):
@@ -32,19 +30,8 @@ if (args.start == None):
 else:
     start = args.start
 
-if (args.type == None):
-    type = input("Type of users (friend, user, peer)?")
-else:
-    type = args.type
-
-#if (args.context == None):
-#    context = input("Type of users (friend, user, peer)?")
-#else:
-#    context = args.context
-
-
 #print prepared config
-print(f"we will add {count} users, started from {start} in context")
+print(f"we will add {count} users, started from {start} with sections {args.sections}")
 
 
 def get_date():
@@ -58,11 +45,8 @@ f = open(f"sip_{date}.conf", "w")
 
 for i in range(count):
     f.write(f"[{start + i}]\n")
-    f.write(f"type={type}\n")
     f.write("secret=hello\n")
-    f.write("context={context}\n")
-    f.write("host=dynamic\n")
-    f.write("\n\n\n")
+    f.write("\n\n")
 
 f.close()
 
