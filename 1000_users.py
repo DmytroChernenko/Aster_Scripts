@@ -1,12 +1,13 @@
 import datetime
 import argparse
-
+import random
+import string
 
 print("Mitresko scripts for asterisk")
 
 #possible types for users
 types = {"friend","peer", "user"}
-
+PASSWORD_LENGTH = 30
 
 #parse args
 parser = argparse.ArgumentParser(description='Info about users for sip.conf')
@@ -39,9 +40,16 @@ def get_date():
     return f"{x.day}.{x.month}.{x.year}_{x.hour}.{x.minute}"
 
 
+def generate_password():
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for i in range(30))
 
 date = get_date()
 f = open(f"sip_{date}.conf", "w")
+
+
+
+
 
 for i in range(count):
     f.write(f"[{start + i}]")
@@ -55,7 +63,8 @@ for i in range(count):
     else:
         f.write("\n")
 
-    f.write("secret=hello\n")
+    password = generate_password()
+    f.write(f"secret={password}\n")
     f.write("\n\n")
 
 f.close()
