@@ -12,12 +12,12 @@ types = {"friend","peer", "user"}
 parser = argparse.ArgumentParser(description='Info about users for sip.conf')
 parser.add_argument('-s','--start', dest='start', type=int, help='Start number for dialplan')
 parser.add_argument('-c','--count', dest='count', type=int, help='Number of users we want to add')
-parser.add_argument('-S','--sections', dest='sections', nargs='+', help='Sections with general parameters')
+parser.add_argument('-S','--sections', dest='sections', nargs='+', help='Sections with general parameters', default=[])
 
 args = parser.parse_args()
 print(args.start)
 print(args.count)
-print(args.sections[0])
+#print(args.sections[0])
 #
 
 if (args.count == None):
@@ -44,7 +44,17 @@ date = get_date()
 f = open(f"sip_{date}.conf", "w")
 
 for i in range(count):
-    f.write(f"[{start + i}]\n")
+    f.write(f"[{start + i}]")
+    if (len(args.sections) > 0):
+        f.write("(")
+        for s in args.sections:
+            if s != args.sections[-1]:
+                f.write(f"{s},")
+            else:
+                f.write(f"{s})\n")
+    else:
+        f.write("\n")
+
     f.write("secret=hello\n")
     f.write("\n\n")
 
