@@ -2,6 +2,7 @@ import datetime
 import argparse
 import random
 import string
+import os
 
 print("Mitresko scripts for asterisk")
 
@@ -65,6 +66,9 @@ for i in range(count):
     file_sip_phones.write("\n\n")
 
 file_sip_phones.close()
+
+os.system(f"chown asterisk:asterisk {result_filename}")
+os.system(f"chmod 750 {result_filename}")
 
 file_sip_conf = open('sip.conf', 'a')
 file_sip_conf.write(f"\n#include {result_filename}\n")
